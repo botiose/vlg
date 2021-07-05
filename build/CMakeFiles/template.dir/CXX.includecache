@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/include/template.hh
+string
+-
+
+/home/otiose/repos/epita/vlg/src/main.cc
+iostream
+-
+string
+-
+template.hh
+/home/otiose/repos/epita/vlg/src/template.hh
+
+/home/otiose/repos/epita/vlg/src/template.cc
+template.hh
+/home/otiose/repos/epita/vlg/src/template.hh
+string
+-
+
