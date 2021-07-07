@@ -56,3 +56,366 @@ make: *** [Makefile:121: cmTC_1b8ed/fast] Error 2
 
 
 
+Determining if the function sgemm_ exists failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e24b6/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_e24b6.dir/build.make CMakeFiles/cmTC_e24b6.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e24b6.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sgemm_   -std=gnu99 -o CMakeFiles/cmTC_e24b6.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e24b6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e24b6.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sgemm_    CMakeFiles/cmTC_e24b6.dir/CheckFunctionExists.c.o  -o cmTC_e24b6 
+/usr/bin/ld: CMakeFiles/cmTC_e24b6.dir/CheckFunctionExists.c.o: in function `main':
+CheckFunctionExists.c:(.text+0x10): undefined reference to `sgemm_'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_e24b6.dir/build.make:87: cmTC_e24b6] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_e24b6/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function cheev_ exists failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_5c8b6/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_5c8b6.dir/build.make CMakeFiles/cmTC_5c8b6.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5c8b6.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=cheev_   -std=gnu99 -o CMakeFiles/cmTC_5c8b6.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_5c8b6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5c8b6.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=cheev_    CMakeFiles/cmTC_5c8b6.dir/CheckFunctionExists.c.o  -o cmTC_5c8b6  /usr/lib/x86_64-linux-gnu/libblas.so 
+/usr/bin/ld: CMakeFiles/cmTC_5c8b6.dir/CheckFunctionExists.c.o: in function `main':
+CheckFunctionExists.c:(.text+0x10): undefined reference to `cheev_'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_5c8b6.dir/build.make:88: cmTC_5c8b6] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_5c8b6/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+
+Determing location of ARPACK failed:
+Libraries to link against: 
+
+Determining if the sinh exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_66107/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_66107.dir/build.make CMakeFiles/cmTC_66107.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_66107.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_66107.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_66107
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_66107.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_66107.dir/CheckSymbolExists.c.o  -o cmTC_66107 
+/usr/bin/ld: CMakeFiles/cmTC_66107.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `sinh'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_66107.dir/build.make:87: cmTC_66107] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_66107/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sinh
+  return ((int*)(&sinh))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the expm1 exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_c2b2a/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_c2b2a.dir/build.make CMakeFiles/cmTC_c2b2a.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c2b2a.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_c2b2a.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_c2b2a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2b2a.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_c2b2a.dir/CheckSymbolExists.c.o  -o cmTC_c2b2a 
+/usr/bin/ld: CMakeFiles/cmTC_c2b2a.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `expm1'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_c2b2a.dir/build.make:87: cmTC_c2b2a] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_c2b2a/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef expm1
+  return ((int*)(&expm1))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fmin exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b2119/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_b2119.dir/build.make CMakeFiles/cmTC_b2119.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b2119.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_b2119.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_b2119
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b2119.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_b2119.dir/CheckSymbolExists.c.o  -o cmTC_b2119 
+/usr/bin/ld: CMakeFiles/cmTC_b2119.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `fmin'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_b2119.dir/build.make:87: cmTC_b2119] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_b2119/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fmin
+  return ((int*)(&fmin))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the log2 exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_21916/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_21916.dir/build.make CMakeFiles/cmTC_21916.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_21916.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_21916.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_21916
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_21916.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_21916.dir/CheckSymbolExists.c.o  -o cmTC_21916 
+/usr/bin/ld: CMakeFiles/cmTC_21916.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `log2'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_21916.dir/build.make:87: cmTC_21916] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_21916/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef log2
+  return ((int*)(&log2))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the log1p exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_717d7/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_717d7.dir/build.make CMakeFiles/cmTC_717d7.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_717d7.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_717d7.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_717d7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_717d7.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_717d7.dir/CheckSymbolExists.c.o  -o cmTC_717d7 
+/usr/bin/ld: CMakeFiles/cmTC_717d7.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `log1p'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_717d7.dir/build.make:87: cmTC_717d7] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_717d7/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef log1p
+  return ((int*)(&log1p))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the rint exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2b8a1/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_2b8a1.dir/build.make CMakeFiles/cmTC_2b8a1.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2b8a1.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_2b8a1.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_2b8a1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2b8a1.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_2b8a1.dir/CheckSymbolExists.c.o  -o cmTC_2b8a1 
+/usr/bin/ld: CMakeFiles/cmTC_2b8a1.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `rint'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_2b8a1.dir/build.make:87: cmTC_2b8a1] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_2b8a1/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef rint
+  return ((int*)(&rint))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the rintf exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_55ad4/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_55ad4.dir/build.make CMakeFiles/cmTC_55ad4.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_55ad4.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_55ad4.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_55ad4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_55ad4.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_55ad4.dir/CheckSymbolExists.c.o  -o cmTC_55ad4 
+/usr/bin/ld: CMakeFiles/cmTC_55ad4.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `rintf'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_55ad4.dir/build.make:87: cmTC_55ad4] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_55ad4/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef rintf
+  return ((int*)(&rintf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the round exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7d416/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_7d416.dir/build.make CMakeFiles/cmTC_7d416.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7d416.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_7d416.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_7d416
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d416.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_7d416.dir/CheckSymbolExists.c.o  -o cmTC_7d416 
+/usr/bin/ld: CMakeFiles/cmTC_7d416.dir/CheckSymbolExists.c.o: in function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `round'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/cmTC_7d416.dir/build.make:87: cmTC_7d416] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_7d416/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef round
+  return ((int*)(&round))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the _stricmp exist failed with the following output:
+Change Dir: /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4f662/fast && make[1]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_4f662.dir/build.make CMakeFiles/cmTC_4f662.dir/build
+make[2]: Entering directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4f662.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_4f662.dir/CheckSymbolExists.c.o   -c /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘_stricmp’ undeclared (first use in this function); did you mean ‘strncmp’?
+   return ((int*)(&_stricmp))[argc];
+                   ^~~~~~~~
+                   strncmp
+/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+make[2]: *** [CMakeFiles/cmTC_4f662.dir/build.make:66: CMakeFiles/cmTC_4f662.dir/CheckSymbolExists.c.o] Error 1
+make[2]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+make[1]: *** [Makefile:121: cmTC_4f662/fast] Error 2
+make[1]: Leaving directory '/home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp'
+
+
+File /home/otiose/repos/epita/vlg/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <string.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef _stricmp
+  return ((int*)(&_stricmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determing location of ARPACK failed:
+Libraries to link against: 
+
+Determing location of ARPACK failed:
+Libraries to link against: 
+
+Determing location of ARPACK failed:
+Libraries to link against: 
+
+Determing location of ARPACK failed:
+Libraries to link against: 
+

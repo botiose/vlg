@@ -53,8 +53,8 @@ CMAKE_BINARY_DIR = /home/otiose/repos/epita/vlg/build
 # Include the progress variables for this target.
 include CMakeFiles/run.dir/progress.make
 
-CMakeFiles/run: bin/template
-	./bin/template
+CMakeFiles/run: bin/be
+	./bin/be
 
 run: CMakeFiles/run
 run: CMakeFiles/run.dir/build.make

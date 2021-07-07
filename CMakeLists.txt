@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(template)
+project(be)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -8,7 +8,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
 set(SRC
   src/main.cc
-  src/template.cc
   )
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -17,11 +16,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     )
 endif ()
 
-add_executable(template
+add_executable(be
   ${SRC}
   )
 
-target_include_directories(template PUBLIC
+target_include_directories(be PUBLIC
   "${PROJECT_SOURCE_DIR}/src/include"
   )
 
@@ -39,13 +38,14 @@ add_custom_target(doc
 
 # RUN TARGET
 add_custom_target(run
-  COMMAND ./bin/template
-  DEPENDS template
+  COMMAND ./bin/be
+  DEPENDS be
   )
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 add_subdirectory(test/extern/googletest EXCLUDE_FROM_ALL)
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
+add_subdirectory(ext/igraph-0.9.4 EXCLUDE_FROM_ALL)
 
-
+target_link_libraries(be PUBLIC igraph)

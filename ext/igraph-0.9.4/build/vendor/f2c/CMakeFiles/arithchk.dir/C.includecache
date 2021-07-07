@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/otiose/repos/epita/vlg/ext/igraph-0.9.4/vendor/f2c/arithchk.c
+stdio.h
+-
+math.h
+-
+errno.h
+-
+

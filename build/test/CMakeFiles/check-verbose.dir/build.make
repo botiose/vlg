@@ -53,7 +53,7 @@ CMAKE_BINARY_DIR = /home/otiose/repos/epita/vlg/build
 # Include the progress variables for this target.
 include test/CMakeFiles/check-verbose.dir/progress.make
 
-test/CMakeFiles/check-verbose: test/template-test/bin/template-test
+test/CMakeFiles/check-verbose: test/be-test/bin/be-test
 	cd /home/otiose/repos/epita/vlg/build/test && printf %80s\\n | tr \  =
 	cd /home/otiose/repos/epita/vlg/build/test && GTEST_COLOR=1 /usr/bin/ctest --output-on-failure | grep -v Running.* || exit 0
 	cd /home/otiose/repos/epita/vlg/build/test && printf %80s\\n | tr \  =

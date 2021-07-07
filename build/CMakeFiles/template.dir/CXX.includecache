@@ -17,10 +17,6 @@ string
 -
 template.hh
 /home/otiose/repos/epita/vlg/src/template.hh
-
-/home/otiose/repos/epita/vlg/src/template.cc
-template.hh
-/home/otiose/repos/epita/vlg/src/template.hh
-string
+vector
 -
 

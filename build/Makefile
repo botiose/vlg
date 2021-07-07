@@ -68,16 +68,6 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -90,16 +80,15 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
 
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
 
-.PHONY : edit_cache/fast
+.PHONY : list_install_components/fast
 
 # Special rule for the target install/strip
 install/strip: preinstall
@@ -112,6 +101,17 @@ install/strip/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
@@ -170,17 +170,17 @@ doc-link/fast:
 .PHONY : doc-link/fast
 
 #=============================================================================
-# Target rules for targets named template
+# Target rules for targets named be
 
 # Build rule for target.
-template: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 template
-.PHONY : template
+be: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 be
+.PHONY : be
 
 # fast build rule for target.
-template/fast:
-	$(MAKE) -f CMakeFiles/template.dir/build.make CMakeFiles/template.dir/build
-.PHONY : template/fast
+be/fast:
+	$(MAKE) -f CMakeFiles/be.dir/build.make CMakeFiles/be.dir/build
+.PHONY : be/fast
 
 #=============================================================================
 # Target rules for targets named doc
@@ -287,17 +287,199 @@ check/fast:
 .PHONY : check/fast
 
 #=============================================================================
-# Target rules for targets named template-test
+# Target rules for targets named be-test
 
 # Build rule for target.
-template-test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 template-test
-.PHONY : template-test
+be-test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 be-test
+.PHONY : be-test
 
 # fast build rule for target.
-template-test/fast:
-	$(MAKE) -f test/template-test/CMakeFiles/template-test.dir/build.make test/template-test/CMakeFiles/template-test.dir/build
-.PHONY : template-test/fast
+be-test/fast:
+	$(MAKE) -f test/be-test/CMakeFiles/be-test.dir/build.make test/be-test/CMakeFiles/be-test.dir/build
+.PHONY : be-test/fast
+
+#=============================================================================
+# Target rules for targets named cxsparse_vendored
+
+# Build rule for target.
+cxsparse_vendored: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cxsparse_vendored
+.PHONY : cxsparse_vendored
+
+# fast build rule for target.
+cxsparse_vendored/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/cs/CMakeFiles/cxsparse_vendored.dir/build.make ext/igraph-0.9.4/vendor/cs/CMakeFiles/cxsparse_vendored.dir/build
+.PHONY : cxsparse_vendored/fast
+
+#=============================================================================
+# Target rules for targets named f2c_vendored
+
+# Build rule for target.
+f2c_vendored: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 f2c_vendored
+.PHONY : f2c_vendored
+
+# fast build rule for target.
+f2c_vendored/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/f2c/CMakeFiles/f2c_vendored.dir/build.make ext/igraph-0.9.4/vendor/f2c/CMakeFiles/f2c_vendored.dir/build
+.PHONY : f2c_vendored/fast
+
+#=============================================================================
+# Target rules for targets named arithchk
+
+# Build rule for target.
+arithchk: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 arithchk
+.PHONY : arithchk
+
+# fast build rule for target.
+arithchk/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/f2c/CMakeFiles/arithchk.dir/build.make ext/igraph-0.9.4/vendor/f2c/CMakeFiles/arithchk.dir/build
+.PHONY : arithchk/fast
+
+#=============================================================================
+# Target rules for targets named glpk_vendored
+
+# Build rule for target.
+glpk_vendored: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 glpk_vendored
+.PHONY : glpk_vendored
+
+# fast build rule for target.
+glpk_vendored/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/glpk/CMakeFiles/glpk_vendored.dir/build.make ext/igraph-0.9.4/vendor/glpk/CMakeFiles/glpk_vendored.dir/build
+.PHONY : glpk_vendored/fast
+
+#=============================================================================
+# Target rules for targets named lapack_vendored
+
+# Build rule for target.
+lapack_vendored: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lapack_vendored
+.PHONY : lapack_vendored
+
+# fast build rule for target.
+lapack_vendored/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/lapack/CMakeFiles/lapack_vendored.dir/build.make ext/igraph-0.9.4/vendor/lapack/CMakeFiles/lapack_vendored.dir/build
+.PHONY : lapack_vendored/fast
+
+#=============================================================================
+# Target rules for targets named blas_vendored
+
+# Build rule for target.
+blas_vendored: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 blas_vendored
+.PHONY : blas_vendored
+
+# fast build rule for target.
+blas_vendored/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/lapack/CMakeFiles/blas_vendored.dir/build.make ext/igraph-0.9.4/vendor/lapack/CMakeFiles/blas_vendored.dir/build
+.PHONY : blas_vendored/fast
+
+#=============================================================================
+# Target rules for targets named arpack_vendored
+
+# Build rule for target.
+arpack_vendored: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 arpack_vendored
+.PHONY : arpack_vendored
+
+# fast build rule for target.
+arpack_vendored/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/lapack/CMakeFiles/arpack_vendored.dir/build.make ext/igraph-0.9.4/vendor/lapack/CMakeFiles/arpack_vendored.dir/build
+.PHONY : arpack_vendored/fast
+
+#=============================================================================
+# Target rules for targets named gmp_vendored
+
+# Build rule for target.
+gmp_vendored: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gmp_vendored
+.PHONY : gmp_vendored
+
+# fast build rule for target.
+gmp_vendored/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/mini-gmp/CMakeFiles/gmp_vendored.dir/build.make ext/igraph-0.9.4/vendor/mini-gmp/CMakeFiles/gmp_vendored.dir/build
+.PHONY : gmp_vendored/fast
+
+#=============================================================================
+# Target rules for targets named plfit
+
+# Build rule for target.
+plfit: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 plfit
+.PHONY : plfit
+
+# fast build rule for target.
+plfit/fast:
+	$(MAKE) -f ext/igraph-0.9.4/vendor/plfit/CMakeFiles/plfit.dir/build.make ext/igraph-0.9.4/vendor/plfit/CMakeFiles/plfit.dir/build
+.PHONY : plfit/fast
+
+#=============================================================================
+# Target rules for targets named igraph
+
+# Build rule for target.
+igraph: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 igraph
+.PHONY : igraph
+
+# fast build rule for target.
+igraph/fast:
+	$(MAKE) -f ext/igraph-0.9.4/src/CMakeFiles/igraph.dir/build.make ext/igraph-0.9.4/src/CMakeFiles/igraph.dir/build
+.PHONY : igraph/fast
+
+#=============================================================================
+# Target rules for targets named parsersources
+
+# Build rule for target.
+parsersources: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 parsersources
+.PHONY : parsersources
+
+# fast build rule for target.
+parsersources/fast:
+	$(MAKE) -f ext/igraph-0.9.4/src/CMakeFiles/parsersources.dir/build.make ext/igraph-0.9.4/src/CMakeFiles/parsersources.dir/build
+.PHONY : parsersources/fast
+
+#=============================================================================
+# Target rules for targets named prpack
+
+# Build rule for target.
+prpack: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 prpack
+.PHONY : prpack
+
+# fast build rule for target.
+prpack/fast:
+	$(MAKE) -f ext/igraph-0.9.4/src/centrality/prpack/CMakeFiles/prpack.dir/build.make ext/igraph-0.9.4/src/centrality/prpack/CMakeFiles/prpack.dir/build
+.PHONY : prpack/fast
+
+#=============================================================================
+# Target rules for targets named cliquer
+
+# Build rule for target.
+cliquer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cliquer
+.PHONY : cliquer
+
+# fast build rule for target.
+cliquer/fast:
+	$(MAKE) -f ext/igraph-0.9.4/src/cliques/cliquer/CMakeFiles/cliquer.dir/build.make ext/igraph-0.9.4/src/cliques/cliquer/CMakeFiles/cliquer.dir/build
+.PHONY : cliquer/fast
+
+#=============================================================================
+# Target rules for targets named bliss
+
+# Build rule for target.
+bliss: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bliss
+.PHONY : bliss
+
+# fast build rule for target.
+bliss/fast:
+	$(MAKE) -f ext/igraph-0.9.4/src/isomorphism/bliss/CMakeFiles/bliss.dir/build.make ext/igraph-0.9.4/src/isomorphism/bliss/CMakeFiles/bliss.dir/build
+.PHONY : bliss/fast
 
 src/main.o: src/main.cc.o
 
@@ -305,7 +487,7 @@ src/main.o: src/main.cc.o
 
 # target to build an object file
 src/main.cc.o:
-	$(MAKE) -f CMakeFiles/template.dir/build.make CMakeFiles/template.dir/src/main.cc.o
+	$(MAKE) -f CMakeFiles/be.dir/build.make CMakeFiles/be.dir/src/main.cc.o
 .PHONY : src/main.cc.o
 
 src/main.i: src/main.cc.i
@@ -314,7 +496,7 @@ src/main.i: src/main.cc.i
 
 # target to preprocess a source file
 src/main.cc.i:
-	$(MAKE) -f CMakeFiles/template.dir/build.make CMakeFiles/template.dir/src/main.cc.i
+	$(MAKE) -f CMakeFiles/be.dir/build.make CMakeFiles/be.dir/src/main.cc.i
 .PHONY : src/main.cc.i
 
 src/main.s: src/main.cc.s
@@ -323,35 +505,8 @@ src/main.s: src/main.cc.s
 
 # target to generate assembly for a file
 src/main.cc.s:
-	$(MAKE) -f CMakeFiles/template.dir/build.make CMakeFiles/template.dir/src/main.cc.s
+	$(MAKE) -f CMakeFiles/be.dir/build.make CMakeFiles/be.dir/src/main.cc.s
 .PHONY : src/main.cc.s
-
-src/template.o: src/template.cc.o
-
-.PHONY : src/template.o
-
-# target to build an object file
-src/template.cc.o:
-	$(MAKE) -f CMakeFiles/template.dir/build.make CMakeFiles/template.dir/src/template.cc.o
-.PHONY : src/template.cc.o
-
-src/template.i: src/template.cc.i
-
-.PHONY : src/template.i
-
-# target to preprocess a source file
-src/template.cc.i:
-	$(MAKE) -f CMakeFiles/template.dir/build.make CMakeFiles/template.dir/src/template.cc.i
-.PHONY : src/template.cc.i
-
-src/template.s: src/template.cc.s
-
-.PHONY : src/template.s
-
-# target to generate assembly for a file
-src/template.cc.s:
-	$(MAKE) -f CMakeFiles/template.dir/build.make CMakeFiles/template.dir/src/template.cc.s
-.PHONY : src/template.cc.s
 
 # Help Target
 help:
@@ -360,14 +515,14 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/local"
-	@echo "... list_install_components"
 	@echo "... install"
 	@echo "... doc-link"
-	@echo "... template"
-	@echo "... edit_cache"
+	@echo "... list_install_components"
+	@echo "... be"
 	@echo "... install/strip"
 	@echo "... doc"
 	@echo "... run"
+	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... gmock_main"
 	@echo "... gmock"
@@ -375,13 +530,24 @@ help:
 	@echo "... gtest"
 	@echo "... check-verbose"
 	@echo "... check"
-	@echo "... template-test"
+	@echo "... be-test"
+	@echo "... cxsparse_vendored"
+	@echo "... f2c_vendored"
+	@echo "... arithchk"
+	@echo "... glpk_vendored"
+	@echo "... lapack_vendored"
+	@echo "... blas_vendored"
+	@echo "... arpack_vendored"
+	@echo "... gmp_vendored"
+	@echo "... plfit"
+	@echo "... igraph"
+	@echo "... parsersources"
+	@echo "... prpack"
+	@echo "... cliquer"
+	@echo "... bliss"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/template.o"
-	@echo "... src/template.i"
-	@echo "... src/template.s"
 .PHONY : help
 
 

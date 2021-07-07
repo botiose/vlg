@@ -53,7 +53,7 @@ CMAKE_BINARY_DIR = /home/otiose/repos/epita/vlg/build
 # Include the progress variables for this target.
 include test/CMakeFiles/check.dir/progress.make
 
-test/CMakeFiles/check: test/template-test/bin/template-test
+test/CMakeFiles/check: test/be-test/bin/be-test
 	cd /home/otiose/repos/epita/vlg/build/test && printf %80s\\n | tr \  =
 	cd /home/otiose/repos/epita/vlg/build/test && /usr/bin/ctest || exit 0
 	cd /home/otiose/repos/epita/vlg/build/test && printf %80s\\n | tr \  =
