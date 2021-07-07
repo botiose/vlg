@@ -2,24 +2,51 @@
 #include <string>
 
 #include <vector>
+#include <set>
+#include <climits>
 
 #include <igraph.h>
 
+
+#define UNUSED(x)(void)(x)
+
+void copyCandidates(const igraph_t &graph, std::set<int long>& candidates) { 
+  igraph_vs_t vs = igraph_vss_all();
+  igraph_vit_t vit;
+
+  igraph_vit_create(&graph, vs, &vit);
+
+  while (!IGRAPH_VIT_END(vit)) {
+    candidates.insert(IGRAPH_VIT_GET(vit));
+    IGRAPH_VIT_NEXT(vit);
+  }
+}
+
+std::vector<int long> boundingEccentricities(const igraph_t &graph) {
+  igraph_integer_t vertexCount = igraph_vcount(&graph);
+
+  std::vector<int long> lowerBounds(vertexCount, LONG_MIN);
+  std::vector<int long> upperBounds(vertexCount, LONG_MAX);
+  std::vector<int long> eccentricities(vertexCount);
+
+  std::set<int long> candidates;
+  copyCandidates(graph, candidates);
+
+  while(!candidates.empty()) {
+    // TODO
+  }
+
+  return eccentricities;
+}
+
 int main() {
-  igraph_real_t diameter;
-  igraph_t graph;
+    igraph_t g;
 
-  igraph_rng_seed(igraph_rng_default(), 42);
+    igraph_star(&g, 10, IGRAPH_STAR_UNDIRECTED, 0);
 
-  igraph_erdos_renyi_game(&graph, IGRAPH_ERDOS_RENYI_GNM, 1000, 3000,
-                          IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
+    boundingEccentricities(g);
 
-  igraph_diameter(&graph, &diameter, 0, 0, 0, IGRAPH_UNDIRECTED, 1);
-  printf("Diameter of a random graph with average degree %g: %g\n",
-          2.0 * igraph_ecount(&graph) / igraph_vcount(&graph),
-          (double) diameter);
+    igraph_destroy(&g);
 
-  igraph_destroy(&graph);
-
-  return 0;
+    return 0;
 }
