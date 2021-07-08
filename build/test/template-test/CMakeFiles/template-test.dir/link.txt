@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/template-test.dir/template.cc.o CMakeFiles/template-test.dir/__/__/src/template.cc.o  -o bin/template-test  ../../lib/libgtestd.a ../../lib/libgtest_maind.a ../../lib/libgtestd.a -lpthread 

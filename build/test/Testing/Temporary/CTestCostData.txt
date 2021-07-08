@@ -1,3 +1,0 @@
-template-test 0 0
-be-test 1 0.00542638
----

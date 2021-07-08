@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/be-test.dir/be.cc.o  -o bin/be-test  ../../lib/libgtestd.a ../../lib/libgtest_maind.a ../../lib/libgtestd.a -lpthread 
