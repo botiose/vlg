@@ -8,13 +8,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
 set(SRC
   src/main.cc
+  src/eccentricity.cc
   )
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set_source_files_properties(${SRC}
-    PROPERTIES COMPILE_FLAGS "-Wall -Wextra -pedantic -Werror -g"
-    )
-endif ()
+# if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+#   set_source_files_properties(${SRC}
+#     PROPERTIES COMPILE_FLAGS "-Wall -Wextra -pedantic -Werror -g"
+#     )
+# endif ()
 
 add_executable(be
   ${SRC}
@@ -37,10 +38,28 @@ add_custom_target(doc
   )
 
 # RUN TARGET
+add_custom_target(run-debug
+  COMMAND ./bin/be
+  valgrind --leak-check=full --show-leak-kinds=all
+  --log-file=cur-leaks.log
+  DEPENDS be
+  )
+
 add_custom_target(run
   COMMAND ./bin/be
   DEPENDS be
   )
+
+# RUN PROFILE TARGET
+add_custom_target(run-profile
+  DEPENDS be
+  COMMAND printf %37sOUTPUT%37s\\\\n | tr " " "="
+  COMMAND
+  valgrind --tool=callgrind --collect-systime=yes --separate-threads=yes --instr-atstart=no ./bin/be
+  COMMAND printf %38sLEAK%38s\\\\n | tr " " "="
+  COMMAND printf %80s\\\\n | tr " " "="
+  )
+
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 add_subdirectory(test/extern/googletest EXCLUDE_FROM_ALL)
