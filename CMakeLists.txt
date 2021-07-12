@@ -11,11 +11,11 @@ set(SRC
   src/eccentricity.cc
   )
 
-# if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-#   set_source_files_properties(${SRC}
-#     PROPERTIES COMPILE_FLAGS "-Wall -Wextra -pedantic -Werror -g"
-#     )
-# endif ()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set_source_files_properties(${SRC}
+    PROPERTIES COMPILE_FLAGS "-Wall -Wextra -pedantic -Werror -g"
+    )
+endif ()
 
 add_executable(be
   ${SRC}

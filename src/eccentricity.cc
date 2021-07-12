@@ -6,31 +6,6 @@
 
 #define UNUSED(x) (void)(x)
 
-void
-copyCandidates(const igraph_t& graph, std::set<long>& candidates) {
-  igraph_vs_t vs = igraph_vss_all();
-  igraph_vit_t vit;
-
-  igraph_vit_create(&graph, vs, &vit);
-
-  while (!IGRAPH_VIT_END(vit)) {
-    candidates.insert(IGRAPH_VIT_GET(vit));
-    IGRAPH_VIT_NEXT(vit);
-  }
-}
-
-void
-computeShortestPaths(const igraph_t& graph,
-                     const long& vertex,
-                     igraph_matrix_t& res) {
-  igraph_vs_t fromVs;
-  igraph_vs_1(&fromVs, vertex);
-
-  igraph_vs_t toVs = igraph_vss_all();
-
-  igraph_shortest_paths(&graph, &res, fromVs, toVs, IGRAPH_OUT);
-}
-
 long
 computeEccentricity(const igraph_matrix_t& res) {
   return igraph_matrix_max(&res);
@@ -72,9 +47,6 @@ selectCandidate(const std::set<long>& candidates,
                 const long& maxUpperVertex,
                 const long& minLowerVertex,
                 bool& chooseUpper) {
-  UNUSED(maxUpperVertex);
-  UNUSED(minLowerVertex);
-  UNUSED(chooseUpper);
   if (maxUpperVertex == -1) {
     return *candidates.begin(); // TODO compute this
   }
@@ -88,7 +60,7 @@ selectCandidate(const std::set<long>& candidates,
   }
 
   chooseUpper = !chooseUpper;
-  std::cout << selection << std::endl;
+
   return selection;
 }
 
@@ -108,8 +80,50 @@ computeBoundVertex(const std::vector<long>& boundVector,
 }
 
 void
-boundingEccentricities(const igraph_t& graph,
+copyCandidates(const igraph_t& graph, std::set<long>& candidates) {
+  igraph_vs_t vs = igraph_vss_all();
+  igraph_vit_t vit;
+
+  igraph_vit_create(&graph, vs, &vit);
+
+  while (!IGRAPH_VIT_END(vit)) {
+    candidates.insert(IGRAPH_VIT_GET(vit));
+    IGRAPH_VIT_NEXT(vit);
+  }
+}
+
+void
+computeShortestPaths(const igraph_t& graph,
+                     const long& vertex,
+                     igraph_matrix_t& res) {
+  igraph_vs_t fromVs;
+  igraph_vs_1(&fromVs, vertex);
+
+  igraph_vs_t toVs = igraph_vss_all();
+  
+  igraph_bool_t isDirected = igraph_is_directed(&graph);
+
+  if (isDirected == true) {
+    std::cout << "here" << std::endl; 
+    igraph_shortest_paths_dijkstra(
+        &graph, &res, fromVs, toVs, nullptr, IGRAPH_OUT);
+  } else {
+    igraph_shortest_paths(&graph, &res, fromVs, toVs, IGRAPH_OUT);
+  }
+}
+
+void
+boundingEccentricities(const igraph_t& originalGraph,
                        std::vector<long>& eccentricities) {
+  igraph_t graph;
+  igraph_copy(&graph, &originalGraph);
+
+  igraph_bool_t isDirected = igraph_is_directed(&graph);
+
+  if (isDirected == true) {
+    igraph_to_undirected(&graph, IGRAPH_TO_UNDIRECTED_COLLAPSE, 0);
+  }
+
   igraph_integer_t vertexCount = igraph_vcount(&graph);
   eccentricities.resize(vertexCount);
 
@@ -143,7 +157,7 @@ boundingEccentricities(const igraph_t& graph,
 
     computeShortestPaths(graph, vertex, shortestPaths);
     eccentricities[vertex] = computeEccentricity(shortestPaths);
-
+  
     std::set<long>::iterator candidateIterator = candidates.begin();
     while (candidateIterator != candidates.end()) {
       long candidate = *candidateIterator;
@@ -163,6 +177,7 @@ boundingEccentricities(const igraph_t& graph,
 
         candidateIterator++;
       }
+
     }
   }
   std::cout << i << std::endl; 

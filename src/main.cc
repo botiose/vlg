@@ -3,23 +3,27 @@
 #include <igraph.h>
 #include <chrono>
 
-#include <valgrind/callgrind.h>
+// #include <valgrind/callgrind.h>
 
 #include "eccentricity.hh"
 
 int
 main() {
-  CALLGRIND_START_INSTRUMENTATION;
+  // CALLGRIND_START_INSTRUMENTATION;
   igraph_t graph;
 
-  // igraph_star(&graph, 10, IGRAPH_STAR_UNDIRECTED, 0);
-  // igraph_simple_interconnected_islands_game(&graph, 10, 10, 0.5, 2);
   igraph_bool_t isConnected;
 
   do {
-    igraph_simple_interconnected_islands_game(&graph, 10, 50, 0.2, 1000);
+    // igraph_simple_interconnected_islands_game(&graph, 10, 10, 0.2, 1000);
+    igraph_k_regular_game(&graph, 10, 2, true, false);
     igraph_is_connected(&graph, &isConnected, IGRAPH_STRONG);  
   } while (!isConnected);
+
+  FILE *ofile;
+  ofile = fopen("graph.dot", "w");
+  igraph_write_graph_dot(&graph, ofile);
+  pclose(ofile);
 
   std::vector<long> eccentricities;
 
@@ -50,6 +54,6 @@ main() {
   // igraph_vector_print(&ecc);
 
   igraph_destroy(&graph);
-  CALLGRIND_STOP_INSTRUMENTATION;
+  // CALLGRIND_STOP_INSTRUMENTATION;
   return 0;
 }
