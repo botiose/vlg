@@ -135,8 +135,6 @@ pruneGraph(igraph_t& graph,
 
   igraph_vit_create(&graph, vs, &vit);
 
-  std::vector<long> prunedVertices;
-
   while (!IGRAPH_VIT_END(vit)) {
     igraph_integer_t vid = IGRAPH_VIT_GET(vit);
 
@@ -151,8 +149,6 @@ pruneGraph(igraph_t& graph,
     igraph_degree(&graph, &degree, curVs, IGRAPH_OUT, false);
 
     if (VECTOR(degree)[0] == 1) {
-      prunedVertices.push_back(vid);
-
       igraph_vector_ptr_t neighborVecPtr;
       igraph_vector_ptr_init(&neighborVecPtr, 0);
 
@@ -167,6 +163,15 @@ pruneGraph(igraph_t& graph,
     }
 
     IGRAPH_VIT_NEXT(vit);
+  }
+
+  std::vector<long> prunedVertices;
+
+  for (const auto& p : prunedNeighborBuckets) {
+    const std::vector<long>& bucket = p.second;
+    for (auto ite = bucket.begin(); ite < bucket.end() - 1; ite++) {
+      prunedVertices.push_back(*ite);
+    }
   }
 
   igraph_vector_t v;
@@ -224,7 +229,8 @@ boundingEccentricities(const igraph_t& originalGraph,
   upperBounds.resize(vertexCount, LONG_MAX);
   // TODO end encapsulate
 
-  std::cout << "pruned bucked: " << prunedNeighborBuckets.size() << std::endl;
+  // std::cout << "pruned bucked: " << prunedNeighborBuckets.size() <<
+  // std::endl;
 
   if (igraph_matrix_max(&shortestPaths) == IGRAPH_INFINITY) {
     throw std::invalid_argument("Graph is not connected");
@@ -234,9 +240,9 @@ boundingEccentricities(const igraph_t& originalGraph,
   long minLowerVertex = -1;
   bool chooseUpper = true;
 
-  int i = 0;
+  // int i = 0;
   while (!candidates.empty()) {
-    i += 1;
+    // i += 1;
     long vertex = selectCandidate(
         candidates, maxUpperVertex, minLowerVertex, chooseUpper);
     long maxUpperVertex = -1;
@@ -268,7 +274,7 @@ boundingEccentricities(const igraph_t& originalGraph,
       }
     }
   }
-  std::cout << "iterations: " << i << std::endl;
+  // std::cout << "iterations: " << i << std::endl;
 
-  // computePrunedEccentricities(prunedNeighborBuckets, eccentricities);
+  computePrunedEccentricities(prunedNeighborBuckets, eccentricities);
 }
