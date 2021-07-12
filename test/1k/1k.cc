@@ -3,6 +3,9 @@
 #include "eccentricity.hh"
 
 TEST(Undirected, 1k) {
+  // Experimental feature. Needs to be called prior to any other igraph call.
+  igraph_set_attribute_table(&igraph_cattribute_table);
+
   igraph_t graph;
   igraph_bool_t isConnected;
 

@@ -10,13 +10,17 @@
 int
 main() {
   // CALLGRIND_START_INSTRUMENTATION;
+
+  // Experimental feature. Needs to be called prior to any other igraph call.
+  igraph_set_attribute_table(&igraph_cattribute_table);
+
   igraph_t graph;
 
   igraph_bool_t isConnected;
 
   do {
-    // igraph_simple_interconnected_islands_game(&graph, 10, 10, 0.2, 1000);
-    igraph_k_regular_game(&graph, 10, 2, true, false);
+    igraph_simple_interconnected_islands_game(&graph, 10, 10, 0.2, 1);
+    // igraph_k_regular_game(&graph, 10, 2, true, false);
     igraph_is_connected(&graph, &isConnected, IGRAPH_STRONG);  
   } while (!isConnected);
 
@@ -35,10 +39,10 @@ main() {
   std::cout << "\nTime taken by function : " << duration.count()
             << " microseconds" << std::endl;
 
-  // for (long eccentricity : eccentricities) {
-  //   std::cout << eccentricity << " ";
-  // }
-  // std::cout <<  std::endl; 
+  for (long eccentricity : eccentricities) {
+    std::cout << eccentricity << " ";
+  }
+  std::cout <<  std::endl; 
 
   igraph_vector_t ecc;
   igraph_vector_init(&ecc, 0);
@@ -51,7 +55,7 @@ main() {
   std::cout << "\nTime taken by function : " << duration.count()
             << " microseconds" << std::endl;
 
-  // igraph_vector_print(&ecc);
+  igraph_vector_print(&ecc);
 
   igraph_destroy(&graph);
   // CALLGRIND_STOP_INSTRUMENTATION;

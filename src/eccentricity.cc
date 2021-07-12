@@ -1,6 +1,7 @@
 #include <iostream>
 #include <climits>
 #include <set>
+#include <map>
 
 #include "eccentricity.hh"
 
@@ -21,12 +22,17 @@ min(const long& a, const long& b) {
   return (a > b) ? b : a;
 }
 
+long
+toOriginalId(const igraph_t& graph, const long& prunedId) {
+  return igraph_cattribute_VAN(&graph, "originalId", prunedId);
+}
+
 void
 computeBounds(const long& srcVertexEccentricity,
-             const long& dstVertex,
-             const igraph_matrix_t& shortestPaths,
-             std::vector<long>& lowerBounds,
-             std::vector<long>& upperBounds) {
+              const long& dstVertex,
+              const igraph_matrix_t& shortestPaths,
+              std::vector<long>& lowerBounds,
+              std::vector<long>& upperBounds) {
   long distance = MATRIX(shortestPaths, 0, dstVertex);
   long lowerBound = lowerBounds[dstVertex];
   lowerBounds[dstVertex] =
@@ -36,7 +42,8 @@ computeBounds(const long& srcVertexEccentricity,
   upperBounds[dstVertex] = min(upperBound, srcVertexEccentricity + distance);
 }
 
-void getDegrees(const igraph_t& graph, igraph_vector_t& degrees) {
+void
+getDegrees(const igraph_t& graph, igraph_vector_t& degrees) {
   igraph_vector_init(&degrees, 0);
   igraph_degree(
       &graph, &degrees, igraph_vss_all(), IGRAPH_OUT, IGRAPH_NO_LOOPS);
@@ -73,10 +80,10 @@ computeBoundVertex(const std::vector<long>& boundVector,
     curBoundVertex = candidate;
   } else if (boundVector[candidate] == boundVector[curBoundVertex] &&
              VECTOR(degrees)[candidate] > VECTOR(degrees)[curBoundVertex]) {
-    curBoundVertex = candidate; 
+    curBoundVertex = candidate;
   } else if (boundVector[candidate] < boundVector[curBoundVertex]) {
     curBoundVertex = candidate;
-  }  
+  }
 }
 
 void
@@ -100,22 +107,14 @@ computeShortestPaths(const igraph_t& graph,
   igraph_vs_1(&fromVs, vertex);
 
   igraph_vs_t toVs = igraph_vss_all();
-  
-  igraph_bool_t isDirected = igraph_is_directed(&graph);
 
-  if (isDirected == true) {
-    std::cout << "here" << std::endl; 
-    igraph_shortest_paths_dijkstra(
-        &graph, &res, fromVs, toVs, nullptr, IGRAPH_OUT);
-  } else {
-    igraph_shortest_paths(&graph, &res, fromVs, toVs, IGRAPH_OUT);
-  }
+  igraph_shortest_paths(&graph, &res, fromVs, toVs, IGRAPH_OUT);
 }
 
 void
-boundingEccentricities(const igraph_t& originalGraph,
-                       std::vector<long>& eccentricities) {
-  igraph_t graph;
+initContainers(const igraph_t& originalGraph,
+               std::vector<long>& eccentricities,
+               igraph_t& graph) {
   igraph_copy(&graph, &originalGraph);
 
   igraph_bool_t isDirected = igraph_is_directed(&graph);
@@ -126,26 +125,114 @@ boundingEccentricities(const igraph_t& originalGraph,
 
   igraph_integer_t vertexCount = igraph_vcount(&graph);
   eccentricities.resize(vertexCount);
+}
 
-  std::vector<long> lowerBounds(vertexCount, LONG_MIN);
-  std::vector<long> upperBounds(vertexCount, LONG_MAX);
+void
+pruneGraph(igraph_t& graph,
+           std::map<long, std::vector<long>>& prunedNeighborBuckets) {
+  igraph_vs_t vs = igraph_vss_all();
+  igraph_vit_t vit;
+
+  igraph_vit_create(&graph, vs, &vit);
+
+  std::vector<long> prunedVertices;
+
+  while (!IGRAPH_VIT_END(vit)) {
+    igraph_integer_t vid = IGRAPH_VIT_GET(vit);
+
+    igraph_cattribute_VAN_set(&graph, "originalId", vid, vid);
+
+    igraph_vector_t degree;
+    igraph_vector_init(&degree, 0);
+
+    igraph_vs_t curVs;
+    igraph_vs_1(&curVs, vid);
+
+    igraph_degree(&graph, &degree, curVs, IGRAPH_OUT, false);
+
+    if (VECTOR(degree)[0] == 1) {
+      prunedVertices.push_back(vid);
+
+      igraph_vector_ptr_t neighborVecPtr;
+      igraph_vector_ptr_init(&neighborVecPtr, 0);
+
+      igraph_neighborhood(&graph, &neighborVecPtr, curVs, 1, IGRAPH_OUT, 1);
+
+      igraph_vector_t* neighborVec =
+          (igraph_vector_t*)igraph_vector_ptr_e(&neighborVecPtr, 0);
+
+      long neighbor = VECTOR(*neighborVec)[0];
+
+      prunedNeighborBuckets[neighbor].push_back(vid);
+    }
+
+    IGRAPH_VIT_NEXT(vit);
+  }
+
+  igraph_vector_t v;
+  std::vector<igraph_real_t> prunedVerticesReal(prunedVertices.begin(),
+                                                prunedVertices.end());
+
+  igraph_vector_init_copy(
+      &v, prunedVerticesReal.data(), prunedVerticesReal.size());
+
+  igraph_vs_t prunedVs;
+  igraph_vs_vector(&prunedVs, &v);
+
+  igraph_delete_vertices(&graph, prunedVs);
+}
+
+void
+computePrunedEccentricities(
+    const std::map<long, std::vector<long>>& prunedNeighborBuckets,
+    std::vector<long>& eccentricities) {
+
+  for (const auto& p : prunedNeighborBuckets) {
+    long neighbor = p.first;
+    const std::vector<long>& bucket = p.second;
+    for (const auto& vertex : bucket) {
+      eccentricities[vertex] = eccentricities[neighbor] + 1;
+    }
+  }
+}
+
+void
+boundingEccentricities(const igraph_t& originalGraph,
+                       std::vector<long>& eccentricities) {
+  igraph_t graph;
+  std::vector<long> lowerBounds;
+  std::vector<long> upperBounds;
+
+  initContainers(originalGraph, eccentricities, graph);
+
+  std::map<long, std::vector<long>> prunedNeighborBuckets;
+  pruneGraph(graph, prunedNeighborBuckets);
 
   std::set<long> candidates;
+  igraph_vector_t degrees;
+  igraph_matrix_t shortestPaths;
+
+  // TODO start encapsulate
   copyCandidates(graph, candidates);
 
-  igraph_vector_t degrees;
   getDegrees(graph, degrees);
 
-  long maxUpperVertex = -1;
-  long minLowerVertex = -1;
-  bool chooseUpper = true;
-
-  igraph_matrix_t shortestPaths;
+  igraph_integer_t vertexCount = igraph_vcount(&graph);
   igraph_matrix_init(&shortestPaths, 1, vertexCount);
+
+  lowerBounds.resize(vertexCount, LONG_MIN);
+  upperBounds.resize(vertexCount, LONG_MAX);
+  // TODO end encapsulate
+
+  std::cout << "pruned bucked: " << prunedNeighborBuckets.size() << std::endl;
 
   if (igraph_matrix_max(&shortestPaths) == IGRAPH_INFINITY) {
     throw std::invalid_argument("Graph is not connected");
   }
+
+  long maxUpperVertex = -1;
+  long minLowerVertex = -1;
+  bool chooseUpper = true;
 
   int i = 0;
   while (!candidates.empty()) {
@@ -156,19 +243,21 @@ boundingEccentricities(const igraph_t& originalGraph,
     long minLowerVertex = -1;
 
     computeShortestPaths(graph, vertex, shortestPaths);
-    eccentricities[vertex] = computeEccentricity(shortestPaths);
-  
+
+    eccentricities[toOriginalId(graph, vertex)] =
+        computeEccentricity(shortestPaths);
+
     std::set<long>::iterator candidateIterator = candidates.begin();
     while (candidateIterator != candidates.end()) {
       long candidate = *candidateIterator;
-      computeBounds(eccentricities[vertex],
-                   candidate,
-                   shortestPaths,
-                   lowerBounds,
-                   upperBounds);
+      computeBounds(eccentricities[toOriginalId(graph, vertex)],
+                    candidate,
+                    shortestPaths,
+                    lowerBounds,
+                    upperBounds);
 
       if (lowerBounds[candidate] == upperBounds[candidate]) {
-        eccentricities[candidate] = lowerBounds[candidate];
+        eccentricities[toOriginalId(graph, candidate)] = lowerBounds[candidate];
 
         candidateIterator = candidates.erase(candidateIterator);
       } else {
@@ -177,8 +266,9 @@ boundingEccentricities(const igraph_t& originalGraph,
 
         candidateIterator++;
       }
-
     }
   }
-  std::cout << i << std::endl; 
+  std::cout << "iterations: " << i << std::endl;
+
+  // computePrunedEccentricities(prunedNeighborBuckets, eccentricities);
 }

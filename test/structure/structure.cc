@@ -3,6 +3,9 @@
 #include "eccentricity.hh"
 
 TEST(undirected, probability10Islands10Nodes) {
+  // Experimental feature. Needs to be called prior to any other igraph call.
+  igraph_set_attribute_table(&igraph_cattribute_table);
+
   for (float i = 0.1; i <= 1; i += 0.1) {
     igraph_t graph;
 
@@ -34,6 +37,9 @@ TEST(undirected, probability10Islands10Nodes) {
 }
 
 TEST(Directed, kRegularGame) {
+  // Experimental feature. Needs to be called prior to any other igraph call.
+  igraph_set_attribute_table(&igraph_cattribute_table);
+
   for (int i = 10; i < 20; i++) {
     igraph_t graph;
     igraph_k_regular_game(&graph, i, 2, true, false);
