@@ -1,0 +1,34 @@
+################################# DESCRIPTION #################################
+
+This project is an implementation of the BoundingEccentricities algorithm
+presented in the following paper by Frank W. Takes and Walter A. Koster:
+https://www.mdpi.com/1999-4893/6/1/100
+
+#################################### BUILD ####################################
+
+To generate the build directory use the following command from the root
+directory with either the "debug" or "release" arguments to respectively build
+to project in debug or release mode.
+
+$ ./etc/script/gen-build.sh [argument]
+
+If no argument is given the project will be build a debug mode by default.
+
+#################################### USAGE ####################################
+
+TODO: describe how to run the executable with a specified graph in a given
+supported format.
+
+################################ DOCUMENTATION ################################
+
+Doxygen was used for the documentation. To create and open the documentation
+in a firefox browser use:
+
+$ make doc
+
+################################## TEST SUIT ##################################
+
+GoogleTest was used for the testsuit. This one can be launched with:
+
+$ make check
+

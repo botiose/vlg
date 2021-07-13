@@ -9,6 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(SRC
   src/main.cc
   src/eccentricity.cc
+  src/prune.cc
   )
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -55,7 +56,9 @@ add_custom_target(run-debug
   )
 
 add_custom_target(run
+  COMMAND printf %37sOUTPUT%37s\\\\n | tr " " "="
   COMMAND ./bin/be
+  COMMAND printf %80s\\\\n | tr " " "="
   DEPENDS be
   )
 
@@ -64,11 +67,11 @@ add_custom_target(run-profile
   DEPENDS be
   COMMAND printf %37sOUTPUT%37s\\\\n | tr " " "="
   COMMAND
-  valgrind --tool=callgrind --collect-systime=yes --separate-threads=yes --instr-atstart=no ./bin/be
+  valgrind --tool=callgrind --collect-systime=yes --separate-threads=yes
+  --instr-atstart=no ./bin/be
   COMMAND printf %38sLEAK%38s\\\\n | tr " " "="
   COMMAND printf %80s\\\\n | tr " " "="
   )
-
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 add_subdirectory(test/extern/googletest EXCLUDE_FROM_ALL)

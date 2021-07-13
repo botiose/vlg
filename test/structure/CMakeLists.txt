@@ -3,6 +3,7 @@ enable_testing()
 set(SRC
   ${CMAKE_CURRENT_LIST_DIR}/structure.cc
   ${PROJECT_SOURCE_DIR}/src/eccentricity.cc
+  ${PROJECT_SOURCE_DIR}/src/prune.cc
   )
 
 add_executable(structure

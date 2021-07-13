@@ -4,8 +4,7 @@
 #include <map>
 
 #include "eccentricity.hh"
-
-#define UNUSED(x) (void)(x)
+#include "prune.hh"
 
 long
 computeEccentricity(const igraph_matrix_t& res) {
@@ -55,7 +54,7 @@ selectCandidate(const std::set<long>& candidates,
                 const long& minLowerVertex,
                 bool& chooseUpper) {
   if (maxUpperVertex == -1) {
-    return *candidates.begin(); // TODO compute this
+    return *candidates.rbegin();
   }
 
   long selection = 0;
@@ -111,7 +110,6 @@ computeShortestPaths(const igraph_t& graph,
 
   igraph_vs_t toVs = igraph_vss_all();
 
-  // TODO read more on the result allocation and deallocation
   igraph_shortest_paths(&graph, &res, fromVs, toVs, IGRAPH_OUT);
 
   igraph_vs_destroy(&fromVs);
@@ -119,9 +117,9 @@ computeShortestPaths(const igraph_t& graph,
 }
 
 void
-initContainers(const igraph_t& originalGraph,
-               std::vector<long>& eccentricities,
-               igraph_t& graph) {
+processGraph(const igraph_t& originalGraph,
+             igraph_t& graph,
+             std::map<long, std::vector<long>>& prunedNeighborBuckets) {
   igraph_copy(&graph, &originalGraph);
 
   igraph_bool_t isDirected = igraph_is_directed(&graph);
@@ -130,80 +128,29 @@ initContainers(const igraph_t& originalGraph,
     igraph_to_undirected(&graph, IGRAPH_TO_UNDIRECTED_COLLAPSE, 0);
   }
 
-  igraph_integer_t vertexCount = igraph_vcount(&graph);
-  eccentricities.resize(vertexCount);
+  pruneGraph(graph, prunedNeighborBuckets);
 }
 
 void
-pruneGraph(igraph_t& graph,
-           std::map<long, std::vector<long>>& prunedNeighborBuckets) {
-  igraph_vs_t vs = igraph_vss_all();
-  igraph_vit_t vit;
+initContainers(const igraph_t& graph,
+               const igraph_integer_t& originalVertexCount,
+               const igraph_integer_t& vertexCount,
+               std::vector<long>& eccentricities,
+               std::vector<long>& lowerBounds,
+               std::vector<long>& upperBounds,
+               std::set<long>& candidates,
+               igraph_vector_t& degrees,
+               igraph_matrix_t& shortestPaths) {
+  eccentricities.resize(originalVertexCount);
 
-  igraph_vit_create(&graph, vs, &vit);
+  copyCandidates(graph, candidates);
 
-  igraph_vs_destroy(&vs);
+  getDegrees(graph, degrees);
 
-  while (!IGRAPH_VIT_END(vit)) {
-    igraph_integer_t vid = IGRAPH_VIT_GET(vit);
+  igraph_matrix_init(&shortestPaths, 1, vertexCount);
 
-    igraph_cattribute_VAN_set(&graph, "originalId", vid, vid);
-
-    igraph_vector_t degree;
-    igraph_vector_init(&degree, 0);
-
-    igraph_vs_t curVs;
-    igraph_vs_1(&curVs, vid);
-
-    igraph_degree(&graph, &degree, curVs, IGRAPH_OUT, false);
-
-    if (VECTOR(degree)[0] == 1) {
-      igraph_vector_ptr_t neighborVecPtr;
-      igraph_vector_ptr_init(&neighborVecPtr, 0);
-
-      igraph_neighborhood(&graph, &neighborVecPtr, curVs, 1, IGRAPH_OUT, 1);
-
-      igraph_vector_t* neighborVec =
-          (igraph_vector_t*)igraph_vector_ptr_e(&neighborVecPtr, 0);
-
-      long neighbor = VECTOR(*neighborVec)[0];
-
-      prunedNeighborBuckets[neighbor].push_back(vid);
-
-      igraph_vector_ptr_destroy_all(&neighborVecPtr);
-    }
-
-    igraph_vector_destroy(&degree);
-    igraph_vs_destroy(&curVs);
-
-    IGRAPH_VIT_NEXT(vit);
-  }
-
-  igraph_vit_destroy(&vit);
-
-  std::vector<long> prunedVertices;
-
-  for (const auto& p : prunedNeighborBuckets) {
-    const std::vector<long>& bucket = p.second;
-    for (auto ite = bucket.begin(); ite < bucket.end() - 1; ite++) {
-      prunedVertices.push_back(*ite);
-    }
-  }
-
-  igraph_vector_t v;
-  std::vector<igraph_real_t> prunedVerticesReal(prunedVertices.begin(),
-                                                prunedVertices.end());
-
-  igraph_vector_init_copy(
-      &v, prunedVerticesReal.data(), prunedVerticesReal.size());
-
-  igraph_vs_t prunedVs;
-  igraph_vs_vector(&prunedVs, &v);
-
-  igraph_delete_vertices(&graph, prunedVs);
-
-  igraph_vector_destroy(&v);
-  igraph_vs_destroy(&prunedVs);
+  lowerBounds.resize(vertexCount, LONG_MIN);
+  upperBounds.resize(vertexCount, LONG_MAX);
 }
 
 void
@@ -224,29 +171,30 @@ void
 boundingEccentricities(const igraph_t& originalGraph,
                        std::vector<long>& eccentricities) {
   igraph_t graph;
-  std::vector<long> lowerBounds;
-  std::vector<long> upperBounds;
-
-  initContainers(originalGraph, eccentricities, graph);
 
   std::map<long, std::vector<long>> prunedNeighborBuckets;
-  pruneGraph(graph, prunedNeighborBuckets);
 
+  igraph_integer_t originalVertexCount = igraph_vcount(&originalGraph);
+
+  processGraph(originalGraph, graph, prunedNeighborBuckets);
+
+  igraph_integer_t vertexCount = igraph_vcount(&graph);
+
+  std::vector<long> lowerBounds;
+  std::vector<long> upperBounds;
   std::set<long> candidates;
   igraph_vector_t degrees;
   igraph_matrix_t shortestPaths;
 
-  // TODO start encapsulate
-  copyCandidates(graph, candidates);
-
-  getDegrees(graph, degrees);
-
-  igraph_integer_t vertexCount = igraph_vcount(&graph);
-  igraph_matrix_init(&shortestPaths, 1, vertexCount);
-
-  lowerBounds.resize(vertexCount, LONG_MIN);
-  upperBounds.resize(vertexCount, LONG_MAX);
-  // TODO end encapsulate
+  initContainers(graph,
+                 originalVertexCount,
+                 vertexCount,
+                 eccentricities,
+                 lowerBounds,
+                 upperBounds,
+                 candidates,
+                 degrees,
+                 shortestPaths);
 
   // std::cout << "pruned bucked: " << prunedNeighborBuckets.size() <<
   // std::endl;
@@ -264,8 +212,8 @@ boundingEccentricities(const igraph_t& originalGraph,
     // i += 1;
     long vertex = selectCandidate(
         candidates, maxUpperVertex, minLowerVertex, chooseUpper);
-    long maxUpperVertex = -1;
-    long minLowerVertex = -1;
+    maxUpperVertex = -1;
+    minLowerVertex = -1;
 
     computeShortestPaths(graph, vertex, shortestPaths);
 
