@@ -21,8 +21,10 @@ cd build
 
 if [[ $mode == "debug" ]]; then
     cmake -DCMAKE_BUILD_TYPE="Debug" ..
+    echo "Debug build"
 elif [[ $mode == "release" ]]; then
     cmake -DCMAKE_BUILD_TYPE="Release" ..
+    echo "Release build"
 else
     echo "Error: Valid options are 'release' or 'debug'"
     cd ..

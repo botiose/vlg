@@ -37,12 +37,21 @@ add_custom_target(doc
   DEPENDS doc-link
   )
 
+add_custom_target(etc-link
+  [ ! -d etc ] && ln -s ${PROJECT_SOURCE_DIR}/etc ${PROJECT_BINARY_DIR}/etc ||
+  exit 0
+  )
+
 # RUN TARGET
 add_custom_target(run-debug
-  COMMAND ./bin/be
-  valgrind --leak-check=full --show-leak-kinds=all
-  --log-file=cur-leaks.log
   DEPENDS be
+  DEPENDS etc-link
+  COMMAND printf %37sOUTPUT%37s\\\\n | tr " " "="
+  COMMAND valgrind --leak-check=full --show-leak-kinds=all
+  --suppressions=etc/valgrind.supp --log-file=cur-leaks.log ./bin/be
+  COMMAND printf %38sLEAK%38s\\\\n | tr " " "="
+  COMMAND ./etc/script/stat-leaks.sh
+  COMMAND printf %80s\\\\n | tr " " "="
   )
 
 add_custom_target(run

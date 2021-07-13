@@ -1,0 +1,53 @@
+{
+   x11_leaks
+   Memcheck:Leak
+   ...
+   obj:*/libX11*
+}
+{
+   call_init
+   Memcheck:Leak
+   ...
+   fun:call_init.part.0
+}
+{
+   call_init
+   Memcheck:Leak
+   ...
+   fun:terminator_CreateInstance
+}
+{
+   unknown
+   Memcheck:Leak
+   ...
+   fun:malloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   createInstance
+   Memcheck:Leak
+   ...
+   fun:loader_create_instance_chain
+}
+{
+   createInstance
+   Memcheck:Leak
+   ...
+   fun:loader_create_device_chain
+}
+{
+   createInstance
+   Memcheck:Leak
+   ...
+   fun:_dl_open
+}

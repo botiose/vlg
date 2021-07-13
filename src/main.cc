@@ -24,11 +24,6 @@ main() {
     igraph_is_connected(&graph, &isConnected, IGRAPH_STRONG);
   } while (!isConnected);
 
-  FILE* ofile;
-  ofile = fopen("graph.dot", "w");
-  igraph_write_graph_dot(&graph, ofile);
-  pclose(ofile);
-
   std::vector<long> eccentricities;
 
   auto start = std::chrono::high_resolution_clock::now();
@@ -47,9 +42,10 @@ main() {
 
   igraph_vector_t ecc;
   igraph_vector_init(&ecc, 0);
+  igraph_vs_t vs = igraph_vss_all();
 
   start = std::chrono::high_resolution_clock::now();
-  igraph_eccentricity(&graph, &ecc, igraph_vss_all(), IGRAPH_OUT);
+  igraph_eccentricity(&graph, &ecc, vs, IGRAPH_OUT);
   stop = std::chrono::high_resolution_clock::now();
 
   duration =
@@ -59,6 +55,8 @@ main() {
 
   // igraph_vector_print(&ecc);
 
+  igraph_vs_destroy(&vs);
+  igraph_vector_destroy(&ecc);
   igraph_destroy(&graph);
   // CALLGRIND_STOP_INSTRUMENTATION;
   return 0;

@@ -97,6 +97,9 @@ copyCandidates(const igraph_t& graph, std::set<long>& candidates) {
     candidates.insert(IGRAPH_VIT_GET(vit));
     IGRAPH_VIT_NEXT(vit);
   }
+
+  igraph_vit_destroy(&vit);
+  igraph_vs_destroy(&vs);
 }
 
 void
@@ -108,7 +111,11 @@ computeShortestPaths(const igraph_t& graph,
 
   igraph_vs_t toVs = igraph_vss_all();
 
+  // TODO read more on the result allocation and deallocation
   igraph_shortest_paths(&graph, &res, fromVs, toVs, IGRAPH_OUT);
+
+  igraph_vs_destroy(&fromVs);
+  igraph_vs_destroy(&toVs);
 }
 
 void
@@ -135,6 +142,8 @@ pruneGraph(igraph_t& graph,
 
   igraph_vit_create(&graph, vs, &vit);
 
+  igraph_vs_destroy(&vs);
+
   while (!IGRAPH_VIT_END(vit)) {
     igraph_integer_t vid = IGRAPH_VIT_GET(vit);
 
@@ -160,10 +169,17 @@ pruneGraph(igraph_t& graph,
       long neighbor = VECTOR(*neighborVec)[0];
 
       prunedNeighborBuckets[neighbor].push_back(vid);
+
+      igraph_vector_ptr_destroy_all(&neighborVecPtr);
     }
+
+    igraph_vector_destroy(&degree);
+    igraph_vs_destroy(&curVs);
 
     IGRAPH_VIT_NEXT(vit);
   }
+
+  igraph_vit_destroy(&vit);
 
   std::vector<long> prunedVertices;
 
@@ -185,6 +201,9 @@ pruneGraph(igraph_t& graph,
   igraph_vs_vector(&prunedVs, &v);
 
   igraph_delete_vertices(&graph, prunedVs);
+
+  igraph_vector_destroy(&v);
+  igraph_vs_destroy(&prunedVs);
 }
 
 void
@@ -233,7 +252,7 @@ boundingEccentricities(const igraph_t& originalGraph,
   // std::endl;
 
   if (igraph_matrix_max(&shortestPaths) == IGRAPH_INFINITY) {
-    throw std::invalid_argument("Graph is not connected");
+    throw std::invalid_argument("eccentricity.cc: Graph is not connected");
   }
 
   long maxUpperVertex = -1;
@@ -277,4 +296,8 @@ boundingEccentricities(const igraph_t& originalGraph,
   // std::cout << "iterations: " << i << std::endl;
 
   computePrunedEccentricities(prunedNeighborBuckets, eccentricities);
+
+  igraph_vector_destroy(&degrees);
+  igraph_matrix_destroy(&shortestPaths);
+  igraph_destroy(&graph);
 }
