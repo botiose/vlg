@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+
+% Use the following to compile
+% mkdir tmp
+% pdflatex -aux-directory=tmp -output-directory=tmp --shell-escape notes.tex
+
+% Package use definitions
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage[parfill]{parskip}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage[outputdir=tmp]{minted}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{tabu}
+\usepackage{upgreek}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[nottoc]{tocbibind}
+\usepackage{natbib}
+
+\setlength{\parindent}{11pt}
+\setlength{\parskip}{0pt}
+
+% Header and footer setup
+\pagestyle{fancy} \rhead{\today} \lhead{Reinforcement Learning conceptions for
+  Poker} \renewcommand{\headrulewidth}{1pt} \renewcommand{\footrulewidth}{1pt}
+
+% Image directory specification
+\graphicspath{ {./images/} }
+
+% Settings minted option for the entire document
+\definecolor{LightGray}{rgb}{0.9, 0.9, 0.9}
+\setminted{frame=lines,framesep=2mm,bgcolor=LightGray,linenos,
+  fontsize=\footnotesize, baselinestretch=1.2}
+
+% Start of document
+\begin{document}
+
+% Title page and table of contents setup
+\begin{titlepage}
+  \begin{center}
+    \vspace*{1cm} \Huge \textbf{Bounding Eccentricities}\\
+    \vspace*{1\baselineskip} Very Large Graphs\\
+    \vspace*{2\baselineskip} \large
+    \paragraph{Abstract}TODO\\
+    \vfill \normalsize \textbf{Théo Minary}\\ \textbf{Jose
+      A. Henriquez Roa}\\
+    \vspace*{2\baselineskip} \today \rhead{\today}
+    \newpage
+    \normalsize \tableofcontents
+    \newpage
+  \end{center}
+\end{titlepage}
+\section{Section 1}
+Test
+\end{document}

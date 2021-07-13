@@ -3,14 +3,12 @@
 #include <igraph.h>
 #include <chrono>
 
-// #include <valgrind/callgrind.h>
+#include <valgrind/callgrind.h>
 
 #include "eccentricity.hh"
 
 int
 main() {
-  // CALLGRIND_START_INSTRUMENTATION;
-
   // Experimental feature. Needs to be called prior to any other igraph call.
   igraph_set_attribute_table(&igraph_cattribute_table);
 
@@ -27,7 +25,9 @@ main() {
   std::vector<long> eccentricities;
 
   auto start = std::chrono::high_resolution_clock::now();
+  CALLGRIND_START_INSTRUMENTATION;
   boundingEccentricities(graph, eccentricities);
+  CALLGRIND_STOP_INSTRUMENTATION;
   auto stop = std::chrono::high_resolution_clock::now();
 
   auto duration =
@@ -58,6 +58,5 @@ main() {
   igraph_vs_destroy(&vs);
   igraph_vector_destroy(&ecc);
   igraph_destroy(&graph);
-  // CALLGRIND_STOP_INSTRUMENTATION;
   return 0;
 }
