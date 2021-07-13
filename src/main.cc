@@ -2,10 +2,49 @@
 #include <vector>
 #include <igraph.h>
 #include <chrono>
+#include <string>
 
-#include <valgrind/callgrind.h>
+// #include <valgrind/callgrind.h>
 
 #include "eccentricity.hh"
+
+void
+loadGreatestConnectedComponent(const std::string& filepath, igraph_t& graph) {
+  igraph_t rawGraph;  
+
+  FILE* f = fopen(filepath.c_str(), "r"); // TODO: handle errors
+  igraph_read_graph_edgelist(&rawGraph, f, 0, false);  
+  pclose(f);
+
+  igraph_vector_ptr_t components;
+  igraph_vector_ptr_init(&components, 0);
+
+  igraph_decompose(&rawGraph, &components, IGRAPH_STRONG, -1, 1);  
+
+  size_t componentCount = igraph_vector_ptr_size(&components);
+
+  size_t greatestComponentIndex = 0;
+  size_t greatestComponentSize = 0;
+
+  for (size_t i = 0; i < componentCount; i++) {
+    igraph_t* component = (igraph_t *)VECTOR(components)[i];
+
+    size_t componentSize = igraph_vcount(component);
+    if (componentSize > greatestComponentSize) {
+      greatestComponentIndex = i;
+      greatestComponentSize = componentSize;
+    }
+  }
+
+  graph = *(igraph_t *)VECTOR(components)[greatestComponentIndex];
+
+  for (size_t i = 0; i < componentCount; i++) {
+    if (i != greatestComponentIndex) {
+      igraph_destroy((igraph_t *)VECTOR(components)[i]);
+      igraph_free(VECTOR(components)[i]);
+    }
+  }
+}
 
 int
 main() {
@@ -13,21 +52,14 @@ main() {
   igraph_set_attribute_table(&igraph_cattribute_table);
 
   igraph_t graph;
-
-  igraph_bool_t isConnected;
-
-  do {
-    igraph_simple_interconnected_islands_game(&graph, 10, 100, 0.1, 2);
-    // igraph_k_regular_game(&graph, 10, 2, true, false);
-    igraph_is_connected(&graph, &isConnected, IGRAPH_STRONG);
-  } while (!isConnected);
+  loadGreatestConnectedComponent("etc/data/ca-HepTh.txt", graph);
 
   std::vector<long> eccentricities;
 
   auto start = std::chrono::high_resolution_clock::now();
-  CALLGRIND_START_INSTRUMENTATION;
+  // CALLGRIND_START_INSTRUMENTATION;
   boundingEccentricities(graph, eccentricities);
-  CALLGRIND_STOP_INSTRUMENTATION;
+  // CALLGRIND_STOP_INSTRUMENTATION;
   auto stop = std::chrono::high_resolution_clock::now();
 
   auto duration =

@@ -50,8 +50,8 @@ getDegrees(const igraph_t& graph, igraph_vector_t& degrees) {
 
 long
 selectCandidate(const std::set<long>& candidates,
-                const long& maxUpperVertex,
                 const long& minLowerVertex,
+                const long& maxUpperVertex,
                 bool& chooseUpper) {
   if (maxUpperVertex == -1) {
     return *candidates.rbegin();
@@ -71,17 +71,28 @@ selectCandidate(const std::set<long>& candidates,
 }
 
 void
-computeBoundVertex(const std::vector<long>& boundVector,
-                   const igraph_vector_t& degrees,
-                   const long& candidate,
-                   long& curBoundVertex) {
-  if (curBoundVertex == -1) {
-    curBoundVertex = candidate;
-  } else if (boundVector[candidate] == boundVector[curBoundVertex] &&
-             VECTOR(degrees)[candidate] > VECTOR(degrees)[curBoundVertex]) {
-    curBoundVertex = candidate;
-  } else if (boundVector[candidate] < boundVector[curBoundVertex]) {
-    curBoundVertex = candidate;
+computeBoundVertices(const std::vector<long>& lowerBounds,
+                     const std::vector<long>& upperBounds,
+                     const igraph_vector_t& degrees,
+                     const long& candidate,
+                     long& minLowerVertex,
+                     long& maxUpperVertex) {
+  if (minLowerVertex == -1) {
+    minLowerVertex = candidate;
+  } else if (lowerBounds[candidate] == lowerBounds[minLowerVertex] &&
+             VECTOR(degrees)[candidate] > VECTOR(degrees)[minLowerVertex]) {
+    minLowerVertex = candidate;
+  } else if (lowerBounds[candidate] < lowerBounds[minLowerVertex]) {
+    minLowerVertex = candidate;
+  }
+
+  if (maxUpperVertex == -1) {
+    maxUpperVertex = candidate;
+  } else if (upperBounds[candidate] == upperBounds[maxUpperVertex] &&
+             VECTOR(degrees)[candidate] > VECTOR(degrees)[maxUpperVertex]) {
+    maxUpperVertex = candidate;
+  } else if (upperBounds[candidate] > upperBounds[maxUpperVertex]) {
+    maxUpperVertex = candidate;
   }
 }
 
@@ -207,11 +218,11 @@ boundingEccentricities(const igraph_t& originalGraph,
   long minLowerVertex = -1;
   bool chooseUpper = true;
 
-  // int i = 0;
+  int i = 0;
   while (!candidates.empty()) {
-    // i += 1;
+    i += 1;
     long vertex = selectCandidate(
-        candidates, maxUpperVertex, minLowerVertex, chooseUpper);
+        candidates, minLowerVertex, maxUpperVertex, chooseUpper);
     maxUpperVertex = -1;
     minLowerVertex = -1;
 
@@ -234,14 +245,18 @@ boundingEccentricities(const igraph_t& originalGraph,
 
         candidateIterator = candidates.erase(candidateIterator);
       } else {
-        computeBoundVertex(lowerBounds, degrees, candidate, minLowerVertex);
-        computeBoundVertex(upperBounds, degrees, candidate, maxUpperVertex);
+        computeBoundVertices(lowerBounds,
+                             upperBounds,
+                             degrees,
+                             candidate,
+                             minLowerVertex,
+                             maxUpperVertex);
 
         candidateIterator++;
       }
     }
   }
-  // std::cout << "iterations: " << i << std::endl;
+  std::cout << "iterations: " << i << std::endl;
 
   computePrunedEccentricities(prunedNeighborBuckets, eccentricities);
 
