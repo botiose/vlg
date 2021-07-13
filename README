@@ -16,8 +16,27 @@ If no argument is given the project will be build a debug mode by default.
 
 #################################### USAGE ####################################
 
-TODO: describe how to run the executable with a specified graph in a given
-supported format.
+The executable takes one or more file paths as arguments. The files should
+contain graphs descriptions in the form of list of edges, as follows:
+
+0 2
+1 2
+2 2
+
+After creating the build directory you can compile and run the executable on a
+given sample graph etc/data/ca-HepTh.txt with:
+
+$ make run
+
+To provide the executable with your own list of files first compile the
+executable (if it hasn't already been done with the previous command) with:
+
+$ make
+
+And then run the generated binary file located under the bin/ directory and
+specify the list of file paths as argument:
+
+$ ./bin/be filepath01 filepath01 ...
 
 ################################ DOCUMENTATION ################################
 

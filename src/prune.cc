@@ -1,3 +1,4 @@
+#include <iostream>
 #include "prune.hh"
 
 void
@@ -51,11 +52,13 @@ bucketOutliers(igraph_t& graph,
 
 void
 removeOutliers(igraph_t& graph,
-               std::map<long, std::vector<long>>& prunedNeighborBuckets) {
+               std::map<long, std::vector<long>>& prunedNeighborBuckets,
+               long& prunedVertexCount) {
   std::vector<long> prunedVertices;
 
   for (const auto& p : prunedNeighborBuckets) {
     const std::vector<long>& bucket = p.second;
+    prunedVertexCount += bucket.size() - 1;
     for (auto ite = bucket.begin(); ite < bucket.end() - 1; ite++) {
       prunedVertices.push_back(*ite);
     }
@@ -78,8 +81,9 @@ removeOutliers(igraph_t& graph,
 
 void
 pruneGraph(igraph_t& graph,
-           std::map<long, std::vector<long>>& prunedNeighborBuckets) {
+           std::map<long, std::vector<long>>& prunedNeighborBuckets,
+           long& prunedVertexCount) {
 
   bucketOutliers(graph, prunedNeighborBuckets);
-  removeOutliers(graph, prunedNeighborBuckets);
+  removeOutliers(graph, prunedNeighborBuckets, prunedVertexCount);
 }

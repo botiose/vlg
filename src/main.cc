@@ -9,12 +9,18 @@
 #include "eccentricity.hh"
 
 void
-loadGreatestConnectedComponent(const std::string& filepath, igraph_t& graph) {
+loadGreatestConnectedComponent(const std::string& filepath, igraph_t*& graph) {
   igraph_t rawGraph;  
 
-  FILE* f = fopen(filepath.c_str(), "r"); // TODO: handle errors
-  igraph_read_graph_edgelist(&rawGraph, f, 0, false);  
-  pclose(f);
+  FILE* f;
+  if ((f = fopen(filepath.c_str(), "r"))) {
+    igraph_read_graph_edgelist(&rawGraph, f, 0, false);  
+    pclose(f);
+  } else {
+    std::cerr << "main.cc: Error occured while attempting to read from "
+              << filepath << std::endl;
+    return;
+  }
 
   igraph_vector_ptr_t components;
   igraph_vector_ptr_init(&components, 0);
@@ -36,7 +42,8 @@ loadGreatestConnectedComponent(const std::string& filepath, igraph_t& graph) {
     }
   }
 
-  graph = *(igraph_t *)VECTOR(components)[greatestComponentIndex];
+  graph = (igraph_t *)VECTOR(components)[greatestComponentIndex];
+  igraph_simplify(graph, true, true, 0);
 
   for (size_t i = 0; i < componentCount; i++) {
     if (i != greatestComponentIndex) {
@@ -46,49 +53,43 @@ loadGreatestConnectedComponent(const std::string& filepath, igraph_t& graph) {
   }
 }
 
+
+
 int
-main() {
+main(int argc, char *argv[]) {
   // Experimental feature. Needs to be called prior to any other igraph call.
   igraph_set_attribute_table(&igraph_cattribute_table);
 
-  igraph_t graph;
-  loadGreatestConnectedComponent("etc/data/ca-HepTh.txt", graph);
+  for (int i = 1; i < argc; i++) {
 
-  std::vector<long> eccentricities;
+    igraph_t* graph = nullptr;
+    loadGreatestConnectedComponent(argv[i], graph);
 
-  auto start = std::chrono::high_resolution_clock::now();
-  // CALLGRIND_START_INSTRUMENTATION;
-  boundingEccentricities(graph, eccentricities);
-  // CALLGRIND_STOP_INSTRUMENTATION;
-  auto stop = std::chrono::high_resolution_clock::now();
+    if (graph == nullptr) {
+      continue;
+    }
 
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  std::cout << "boundingEccentricities(...) : " << duration.count()
-            << " microseconds" << std::endl;
+    if (i != 1) {
+      std::cout << std::endl; 
+    }
 
-  // for (long eccentricity : eccentricities) {
-  //   std::cout << eccentricity << " ";
-  // }
-  // std::cout <<  std::endl;
+    std::cout << argv[i] << ":" << std::endl;
 
-  igraph_vector_t ecc;
-  igraph_vector_init(&ecc, 0);
-  igraph_vs_t vs = igraph_vss_all();
+    FILE* f = fopen("graph.dot", "w");
+    igraph_write_graph_dot(graph, f);
+    pclose(f);
 
-  start = std::chrono::high_resolution_clock::now();
-  igraph_eccentricity(&graph, &ecc, vs, IGRAPH_OUT);
-  stop = std::chrono::high_resolution_clock::now();
+    std::cout << "nodes: " << igraph_vcount(graph) << std::endl; 
+    std::cout << "edges: " << igraph_ecount(graph) << std::endl; 
 
-  duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  std::cout << "igraph_eccentricity(......) : " << duration.count()
-            << " microseconds" << std::endl;
+    std::vector<long> eccentricities; 
+    // CALLGRIND_START_INSTRUMENTATION;
+    boundingEccentricities(*graph, eccentricities);
+    // CALLGRIND_STOP_INSTRUMENTATION;
 
-  // igraph_vector_print(&ecc);
+    igraph_destroy(graph);
+    igraph_free(graph);
+  }
 
-  igraph_vs_destroy(&vs);
-  igraph_vector_destroy(&ecc);
-  igraph_destroy(&graph);
   return 0;
 }

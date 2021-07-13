@@ -10,4 +10,5 @@
  */
 void
 pruneGraph(igraph_t& graph,
-           std::map<long, std::vector<long>>& prunedNeighborBuckets);
+           std::map<long, std::vector<long>>& prunedNeighborBuckets,
+           long& prunedVertexCount);

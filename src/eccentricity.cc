@@ -130,7 +130,8 @@ computeShortestPaths(const igraph_t& graph,
 void
 processGraph(const igraph_t& originalGraph,
              igraph_t& graph,
-             std::map<long, std::vector<long>>& prunedNeighborBuckets) {
+             std::map<long, std::vector<long>>& prunedNeighborBuckets,
+             long& prunedVertexCount) {
   igraph_copy(&graph, &originalGraph);
 
   igraph_bool_t isDirected = igraph_is_directed(&graph);
@@ -139,7 +140,7 @@ processGraph(const igraph_t& originalGraph,
     igraph_to_undirected(&graph, IGRAPH_TO_UNDIRECTED_COLLAPSE, 0);
   }
 
-  pruneGraph(graph, prunedNeighborBuckets);
+  pruneGraph(graph, prunedNeighborBuckets, prunedVertexCount);
 }
 
 void
@@ -187,7 +188,10 @@ boundingEccentricities(const igraph_t& originalGraph,
 
   igraph_integer_t originalVertexCount = igraph_vcount(&originalGraph);
 
-  processGraph(originalGraph, graph, prunedNeighborBuckets);
+  long prunedVertexCount = 0;
+  processGraph(originalGraph, graph, prunedNeighborBuckets, prunedVertexCount);
+
+  std::cout << "pruned: " << prunedVertexCount << std::endl; 
 
   igraph_integer_t vertexCount = igraph_vcount(&graph);
 
