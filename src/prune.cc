@@ -83,7 +83,6 @@ void
 pruneGraph(igraph_t& graph,
            std::map<long, std::vector<long>>& prunedNeighborBuckets,
            long& prunedVertexCount) {
-
   bucketOutliers(graph, prunedNeighborBuckets);
   removeOutliers(graph, prunedNeighborBuckets, prunedVertexCount);
 }

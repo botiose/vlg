@@ -6,6 +6,8 @@
 #include "eccentricity.hh"
 #include "prune.hh"
 
+#define UNUSED(x) (void)(x)
+
 long
 computeEccentricity(const igraph_matrix_t& res) {
   return igraph_matrix_max(&res);
@@ -54,7 +56,7 @@ selectCandidate(const std::set<long>& candidates,
                 const long& maxUpperVertex,
                 bool& chooseUpper) {
   if (maxUpperVertex == -1) {
-    return *candidates.rbegin();
+    return *candidates.begin();
   }
 
   long selection = 0;
@@ -191,7 +193,7 @@ boundingEccentricities(const igraph_t& originalGraph,
   long prunedVertexCount = 0;
   processGraph(originalGraph, graph, prunedNeighborBuckets, prunedVertexCount);
 
-  std::cout << "pruned: " << prunedVertexCount << std::endl; 
+  std::cout << "pruned: " << prunedVertexCount << std::endl;
 
   igraph_integer_t vertexCount = igraph_vcount(&graph);
 
@@ -210,9 +212,6 @@ boundingEccentricities(const igraph_t& originalGraph,
                  candidates,
                  degrees,
                  shortestPaths);
-
-  // std::cout << "pruned bucked: " << prunedNeighborBuckets.size() <<
-  // std::endl;
 
   if (igraph_matrix_max(&shortestPaths) == IGRAPH_INFINITY) {
     throw std::invalid_argument("eccentricity.cc: Graph is not connected");
