@@ -75,12 +75,12 @@
 In this section we present some performance analysis of our implementation of
 this algorithm. To assess the performance of our implementation with respect to
 the results found in section 6 of the paper [1] we provide some of the same
-performance analysis. We have thus measured the number of execution of our
+performance measures. We have thus measured the number of execution of our
 shortest path search algorithm required to compute all of the eccentricities. In
 this section we shall first analyse the performance of the different selection
 strategies as well as the graph prunning strategy given in the paper. The number
 of iteration taken after the implementation of each method presented in the
-respect columns for the ca-CondMat, ca-HepPh and ca-HepTh is given in the
+respective columns for the ca-CondMat, ca-HepPh and ca-HepTh is given in the
 following table:\\
 \begin{center}
  \begin{tabular}{||c c c c c||} 
@@ -100,17 +100,19 @@ following table:\\
 The best performing variant was evaluated on 3 more datasets of higher
 sizes. The following table shows the results:\\
 \begin{tcolorbox}
-  TODO
+  \begin{center}
+    TODO
+  \end{center}
 \end{tcolorbox}
 \section{Conclusion}
 We have thus implemented the algorithm and have found very similar results for
 each of the graphs used in the paper. We also have seen the relative improvement
-of each optimization method proposed in the reasearch paper. However, there are
-still some improvements that can be performed. A possible route for improvement
-would be to find a better candidate selection method, however this would require
-more research to be performed. Another route for improvement that would require
-less effort would be to parallelise the shortest path computations to leverage
-as most as possible multiple core systems which are much more popular today than
+of each optimization method proposed in the paper. However, there are still some
+improvements that can be performed. A possible route for improvement would be to
+find a better candidate selection method, however this would require more
+research to be performed. Another route for improvement that would require less
+effort would be to parallelise the shortest path computations to leverage as
+most as possible multiple core systems which are much more popular today than
 they were in 2013.
 \section{References}
 \begin{enumerate}
