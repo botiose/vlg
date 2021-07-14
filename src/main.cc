@@ -53,14 +53,17 @@ loadGreatestConnectedComponent(const std::string& filepath, igraph_t*& graph) {
   }
 }
 
-
-
 int
 main(int argc, char *argv[]) {
   // Experimental feature. Needs to be called prior to any other igraph call.
   igraph_set_attribute_table(&igraph_cattribute_table);
 
   for (int i = 1; i < argc; i++) {
+    if (i != 1) {
+      std::cout << std::endl; 
+    }
+
+    std::cout << argv[i] << ":" << std::endl;
 
     igraph_t* graph = nullptr;
     loadGreatestConnectedComponent(argv[i], graph);
@@ -68,12 +71,6 @@ main(int argc, char *argv[]) {
     if (graph == nullptr) {
       continue;
     }
-
-    if (i != 1) {
-      std::cout << std::endl; 
-    }
-
-    std::cout << argv[i] << ":" << std::endl;
 
     FILE* f = fopen("graph.dot", "w");
     igraph_write_graph_dot(graph, f);

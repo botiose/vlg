@@ -48,15 +48,34 @@
     \vspace*{1cm} \Huge \textbf{Bounding Eccentricities}\\
     \vspace*{1\baselineskip} Very Large Graphs\\
     \vspace*{2\baselineskip} \large
-    \paragraph{Abstract}TODO\\
-    \vfill \normalsize \textbf{Théo Minary}\\ \textbf{Jose
-      A. Henriquez Roa}\\
+    \begin{abstract}
+    This paper is a summary of our research and development
+    of the Bounding Eccentricities algorithm introduced in the 2013 article
+    Computing the Eccentricity Distribution of Large Graphs by Frank W. Takes
+    and Walter A. Kosters. In this report we restate all of the methodologies
+    from the original paper that were applied during the implementation of the
+    Bounding Eccentricities algorithm, as well as any other external concepts
+    originating from other research on the same topic. We also show the results
+    of various experiments using the same performance measures as in the
+    original paper for the sake of simplifying comparison. Additionally, we also
+    show the relative improvement brought forth by of all of the main
+    methodologies introduced in the paper over previous versions, namely
+    selection strategies and graph prunning.
+    \end{abstract}
+    \vfill \normalsize \textbf{Théo Minary : theo.minary@epita.fr}\\ \textbf{Jose
+      A. Henriquez Roa : jose.henriquez-roa@epita.fr}\\
     \vspace*{2\baselineskip} \today \rhead{\today}
     \newpage
     \normalsize \tableofcontents
     \newpage
   \end{center}
 \end{titlepage}
-\section{Section 1}
-Test
+\section{Experiments}
+In this section we present some performance analysis of our implementation of
+this algorithm. To assess the performance of our implementation with respect to
+the results found in section 6 of the paper TODO we provide some of the same
+performance analysis. We have thus measured the number of execution of our
+shortest path search algorithm required to compute all of the eccentricities on
+the pruned graph.
+\section{References}
 \end{document}
