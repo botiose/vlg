@@ -56,6 +56,7 @@ add_custom_target(run-debug
   )
 
 add_custom_target(run
+  DEPENDS etc-link
   COMMAND printf %37sOUTPUT%37s\\\\n | tr " " "="
   COMMAND ./bin/be etc/data/ca-HepTh.txt
   COMMAND printf %80s\\\\n | tr " " "="

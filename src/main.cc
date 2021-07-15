@@ -4,8 +4,6 @@
 #include <chrono>
 #include <string>
 
-// #include <valgrind/callgrind.h>
-
 #include "eccentricity.hh"
 
 void
@@ -72,17 +70,11 @@ main(int argc, char *argv[]) {
       continue;
     }
 
-    FILE* f = fopen("graph.dot", "w");
-    igraph_write_graph_dot(graph, f);
-    pclose(f);
-
     std::cout << "nodes: " << igraph_vcount(graph) << std::endl; 
     std::cout << "edges: " << igraph_ecount(graph) << std::endl; 
 
     std::vector<long> eccentricities; 
-    // CALLGRIND_START_INSTRUMENTATION;
     boundingEccentricities(*graph, eccentricities);
-    // CALLGRIND_STOP_INSTRUMENTATION;
 
     igraph_destroy(graph);
     igraph_free(graph);
