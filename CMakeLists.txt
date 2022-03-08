@@ -75,9 +75,6 @@ add_custom_target(run-profile
   )
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
-add_subdirectory(test/extern/googletest EXCLUDE_FROM_ALL)
-add_subdirectory(test EXCLUDE_FROM_ALL)
-
 add_subdirectory(ext/igraph-0.9.4 EXCLUDE_FROM_ALL)
 
 target_link_libraries(be PUBLIC igraph)

@@ -1,0 +1,54 @@
+* Bounding Eccentricities
+
+This project is an implementation of the BoundingEccentricities algorithm
+presented in the following paper by Frank W. Takes and Walter A. Koster:
+https://www.mdpi.com/1999-4893/6/1/100
+
+* Build
+
+First the file located in ext/igraph-0.9.4.tar.gz should be decompressed into
+the same 'ext' directory with:
+
+$ tar xf igraph-0.9.4.tar.gz
+
+Then to generate the build directory use the following command from the root
+directory with either the "debug" or "release" arguments to respectively build
+to project in debug or release mode.
+
+$ ./etc/script/gen-build.sh [argument]
+
+If no argument is given the project will be build a debug mode by default.
+
+* Usage
+
+The executable takes one or more file paths as arguments. The files should
+contain graphs descriptions in the form of list of edges, as follows:
+
+0 2
+1 2
+2 2
+
+After creating the build directory you can compile and run the executable on a
+given sample graph etc/data/ca-HepTh.txt with:
+
+$ make run
+
+To provide the executable with your own list of files first compile the
+executable (if it hasn't already been done with the previous command) with:
+
+$ make
+
+And then run the generated binary file located under the bin/ directory and
+specify the list of file paths as argument:
+
+$ ./bin/be filepath01 filepath01 ...
+
+* Documentation & Report
+
+Doxygen was used for the documentation. To create and open the documentation
+in a firefox browser use:
+
+$ make doc
+ 
+The report can be found in:
+https://github.com/jose-henriquez-roa/bounding-eccentricities/tree/master/doc/report/report.pdf
